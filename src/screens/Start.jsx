@@ -1,10 +1,12 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import logo from '../../assets/logo.png';
 
 const Start = ({ setPage }) => {
   return (
     <View style={{ height: '100%', justifyContent: 'center', backgroundColor: '#fff' }}>
       <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <Image style={{width: 200, height: 200}} source={logo}/>
         <Text style={{ fontSize: 30, fontWeight: '600'}}>Dspmu, Ranchi</Text>
       </View>
       <View style={styles.bottom}>
