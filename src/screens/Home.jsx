@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Main from './Main';
-import Login from './Login';
 import Notice from './Notices';
-import Course from './Course';
+import Other from './Other';
 import Profile from './Profile';
 
 const Home = () => {
@@ -11,9 +10,9 @@ const Home = () => {
   return (
     <View style={{height: "100%"}}>
         <View>
-            {page === 0 && <Login />}
+            {page === 0 && <Main />}
             {page === 1 && <Notice />}
-            {page === 2 && <Course />}
+            {page === 2 && <Other />}
             {page === 3 && <Profile />}
         </View>
         <View style={styles.nav}>
@@ -24,7 +23,7 @@ const Home = () => {
                 <Text style={[styles.navBtnTxt, page === 1 ? {color: '#1ab69d'} : null]}>Notice</Text>
             </Pressable>
             <Pressable onPress={()=> setPage(2)} style={styles.navBtn}>
-                <Text style={[styles.navBtnTxt, page === 2 ? {color: '#1ab69d'} : null]}>Course</Text>
+                <Text style={[styles.navBtnTxt, page === 2 ? {color: '#1ab69d'} : null]}>Other</Text>
             </Pressable>
             <Pressable onPress={()=> setPage(3)} style={styles.navBtn}>
                 <Text style={[styles.navBtnTxt, page === 3 ? {color: '#1ab69d'} : null]}>Profile</Text>

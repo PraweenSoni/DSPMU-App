@@ -9,7 +9,7 @@ function Login() {
       <TextInput style={styles.inp} placeholder="Date of Birth" />
       <TextInput style={styles.inp} placeholder="Password" />
       <View style={{width: '70%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 15}}>
-        <Text>Remember me</Text>
+        <Text>Terms & Conditions</Text>
         <Text>Forgot password</Text>
       </View>
       <Pressable style={[styles.btn, {backgroundColor: '#1ab69d'}]}>

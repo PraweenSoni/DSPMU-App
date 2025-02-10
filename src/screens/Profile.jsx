@@ -1,20 +1,24 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import logo from '../../assets/user.png';
+import userImg from '../../assets/user.png';
 
 function Profile() {
   return (
     <View style={{height: '100%', alignItems: 'center', top: 80}}>
         <Text style={{fontSize: 30, fontWeight: 600, marginBottom: 20}}>DSPMU, Ranchi</Text>
-        <Image style={styles.userImg} source={logo}/>
+        <Image style={styles.userImg} source={userImg}/>
         <View style={{width: '100%', alignItems: 'center', marginTop: 10}}>
           <Text style={{fontSize: 22, fontWeight: 500}}>User Name</Text>
           <Text style={{fontSize: 18}}>Subject</Text>
+          <Text style={{fontSize: 18}}>Departement</Text>
         </View>
         <View style={styles.menu}>
           <Text style={styles.menuList}>Edit Profile</Text>
           <Text style={styles.menuList}>Result</Text>
           <Text style={styles.menuList}>Syllabus</Text>
-          <Text style={styles.menuList}>Change Password</Text>
+          <Text style={styles.menuList}>Time Tables</Text>
+          <Text style={styles.menuList}>Exam schedules</Text>
+          <Text style={styles.menuList}>Academic Calendar</Text>
+          <Text style={styles.menuList}>Feedback</Text>
           <Text style={styles.menuList}>Log Out</Text>
         </View>
     </View>

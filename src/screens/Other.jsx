@@ -1,11 +1,11 @@
 import { Text, View } from "react-native";
 
-function Profile() {
+function Other() {
   return (
     <View>
-        <Text>Course page</Text>
+        <Text>Other page</Text>
     </View>
   )
 }
 
-export default Profile;
+export default Other;
