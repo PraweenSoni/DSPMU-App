@@ -1,5 +1,6 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import userImg from '../../assets/user.png';
+import arrowForward from '../../assets/arrowForward.png';
 
 function Profile() {
   return (
@@ -12,14 +13,14 @@ function Profile() {
           <Text style={{fontSize: 18}}>Departement</Text>
         </View>
         <View style={styles.menu}>
-          <Text style={styles.menuList}>Edit Profile</Text>
-          <Text style={styles.menuList}>Result</Text>
-          <Text style={styles.menuList}>Syllabus</Text>
-          <Text style={styles.menuList}>Time Tables</Text>
-          <Text style={styles.menuList}>Exam schedules</Text>
-          <Text style={styles.menuList}>Academic Calendar</Text>
-          <Text style={styles.menuList}>Feedback</Text>
-          <Text style={styles.menuList}>Log Out</Text>
+          <View style={styles.menuList}><Text style={styles.menuListText}>Edit Profile</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
+          <View style={styles.menuList}><Text style={styles.menuListText}>Result</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
+          <View style={styles.menuList}><Text style={styles.menuListText}>Syllabus</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
+          <View style={styles.menuList}><Text style={styles.menuListText}>Time Tables</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
+          <View style={styles.menuList}><Text style={styles.menuListText}>Exam schedules</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
+          <View style={styles.menuList}><Text style={styles.menuListText}>Academic Calendar</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
+          <View style={styles.menuList}><Text style={styles.menuListText}>Feedback</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
+          <View style={styles.menuList}><Text style={styles.menuListText}>Log Out</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
         </View>
     </View>
   )
@@ -41,11 +42,20 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   menuList:{
-    fontSize: 18,
     width: '86%',
     padding: 7,
     borderBottomWidth: 2,
     borderColor: '#858585',
-    fontWeight: 500
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  menuListText:{
+    fontSize: 18,
+    fontWeight: 500,
+  },
+  arrowForward:{
+    height: 16,
+    width: 16,
+    
   }
 })
