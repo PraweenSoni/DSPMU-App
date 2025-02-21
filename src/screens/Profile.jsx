@@ -16,9 +16,10 @@ function Profile() {
           <View style={styles.menuList}><Text style={styles.menuListText}>Edit Profile</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
           <View style={styles.menuList}><Text style={styles.menuListText}>Result</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
           <View style={styles.menuList}><Text style={styles.menuListText}>Syllabus</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
-          <View style={styles.menuList}><Text style={styles.menuListText}>Time Tables</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
+          {/* <View style={styles.menuList}><Text style={styles.menuListText}>Time Tables</Text><Image style={styles.arrowForward} source={arrowForward}/></View> */}
           <View style={styles.menuList}><Text style={styles.menuListText}>Exam schedules</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
-          <View style={styles.menuList}><Text style={styles.menuListText}>Academic Calendar</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
+          <View style={styles.menuList}><Text style={styles.menuListText}>Readmission Fees</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
+          {/* <View style={styles.menuList}><Text style={styles.menuListText}>Academic Calendar</Text><Image style={styles.arrowForward} source={arrowForward}/></View> */}
           <View style={styles.menuList}><Text style={styles.menuListText}>Feedback</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
           <View style={styles.menuList}><Text style={styles.menuListText}>Log Out</Text><Image style={styles.arrowForward} source={arrowForward}/></View>
         </View>
@@ -56,6 +57,5 @@ const styles = StyleSheet.create({
   arrowForward:{
     height: 16,
     width: 16,
-    
   }
 })

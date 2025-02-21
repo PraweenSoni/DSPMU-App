@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Main from './Main';
-import Notice from './Notices';
+import Notice from './Notice';
 import Other from './Other';
 import Profile from './Profile';
 
@@ -9,7 +9,7 @@ const Home = () => {
     const [page, setPage] = useState(0);
   return (
     <View style={{height: "100%"}}>
-        <View>
+        <View style={{marginBottom: 42}}>
             {page === 0 && <Main />}
             {page === 1 && <Notice />}
             {page === 2 && <Other />}
@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
     nav:{
         position: "absolute",
         bottom: 0,
-        width: "100%",
+        width: '100%',
+        height: 42,
         border: 1,
         backgroundColor: '#ee4a62',
         flexDirection: 'row',
@@ -52,6 +53,6 @@ const styles = StyleSheet.create({
     navBtnTxt:{
         fontSize: 16,
         color: '#fff',
-        fontWeight: 600,
+        fontWeight: 500,
     }
 })

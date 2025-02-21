@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 
 const Timetable = () => {
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  const days = ['Monday', 'Tuesday', 'Wednesday'];
   const timeSlots = [
     '9:00 AM - 10:00 AM',
     '10:00 AM - 11:00 AM',
@@ -12,10 +12,8 @@ const Timetable = () => {
 
   const timetable = {
     Monday: ['Math', 'Physics', 'Chemistry', 'Lab'],
-    Tuesday: ['Biology', 'Math', 'History'],
-    Wednesday: ['Computer Science', 'Math', 'Physics'],
-    Thursday: ['Math', 'Biology', 'Chemistry', 'Lab'],
-    Friday: ['Chemistry', 'English', 'Physics'],
+    Tuesday: ['Lab', 'Biology', 'Math', 'History'],
+    Wednesday: ['Computer Science', 'Math', 'Physics', 'Lab'],
   };
 
   return (
