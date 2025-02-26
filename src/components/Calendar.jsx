@@ -36,7 +36,7 @@ const Calendar = () => {
     
     return (
       <TouchableOpacity key={day} style={[styles.day, isToday && styles.today]}>
-        <Text style={styles.dayText}>{day.getDate()}</Text>
+        <Text style={[styles.dayText, isToday && styles.today]}>{day.getDate()}</Text>
       </TouchableOpacity>
     );
   };
@@ -44,18 +44,32 @@ const Calendar = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={handlePrevMonth}>
-          <Text style={styles.arrow}>&lt;</Text>
-        </TouchableOpacity>
         <Text style={styles.month}>
           {currentDate.toLocaleString('default', { month: 'long' })} {currentDate.getFullYear()}
         </Text>
-        <TouchableOpacity onPress={handleNextMonth}>
-          <Text style={styles.arrow}>&gt;</Text>
-        </TouchableOpacity>
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity style={styles.NxtMnthBtn} onPress={handlePrevMonth}>
+            <Text style={styles.arrow}>&lt;</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.NxtMnthBtn} onPress={handleNextMonth}>
+            <Text style={styles.arrow}>&gt;</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={styles.calendar}>
+        <Text style={styles.day}>M</Text>
+        <Text style={styles.day}>T</Text>
+        <Text style={styles.day}>W</Text>
+        <Text style={styles.day}>T</Text>
+        <Text style={styles.day}>F</Text>
+        <Text style={styles.day}>S</Text>
+        <Text style={styles.day}>S</Text>
       </View>
       <View style={styles.calendar}>
         {daysInMonth.map((day) => renderDay(day))}
+      </View>
+      <View style={{borderWidth: 1, padding: 5, marginTop: 10, borderRadius: 4, borderColor: '#DDD'}}>
+        <Text style={{fontSize: 16}}>No Notice from college</Text>
       </View>
     </View>
   );
@@ -70,9 +84,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
+    paddingHorizontal: 5
   },
-  arrow: {
-    fontSize: 24,
+  NxtMnthBtn: {
+    height: 40,
+    width: 40,
+    borderRadius: 7,
+    backgroundColor: '#ee4a62',
+    marginLeft: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  arrow:{
+    color: '#fff',
+    fontSize: 30,
+    fontWeight: 700,
   },
   month: {
     fontSize: 24,
@@ -81,22 +107,24 @@ const styles = StyleSheet.create({
   calendar: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    gap: 5
   },
   day: {
-    width: 40,
-    height: 40,
+    width: 46,
+    height: 46,
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 2,
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 4,
   },
   today: {
-    backgroundColor: '#00adf5',
+    backgroundColor: '#ee4a62',
+    color: '#fff'
   },
   dayText: {
     color: '#000',
+    fontSize: 16
   },
 });
 

@@ -31,6 +31,7 @@ function Main() {
       </View>
       <ScrollView nestedScrollEnabled={true} style={styles.noticeSec}>
         {/* <notice Box for all departement /> */}
+        <Text style={{fontSize: 16, marginBottom: 10}}>All Notices</Text>
         <Notices />
         <Notices />
         <Notices />
@@ -46,10 +47,10 @@ function Main() {
         {/* <academic calander also display/>using morden calander style like google calander */}
       </View>
       <View style={{alignItems: 'center'}}>
-        <FormBox num={811} formName="FORM DEMAND" color="#1ab69d"/>
-        <FormBox num={537} formName="TOTAL FORM SALE" color="#ee4a62"/>
-        <FormBox num={468} formName="FORM FILLUP" color="#8e56ff"/>
-        <FormBox num={779} formName="TOTAL ADMISSION" color="#f8941f"/>
+        <FormBox num={15} formName="CLASS PRESENT" color="#1ab69d"/>
+        <FormBox num={18} formName="TOTAL CLASS RUN" color="#ee4a62"/>
+        <FormBox num={6} formName="LAB PRESENT" color="#8e56ff"/>
+        <FormBox num={8} formName="TOTAL LAB RUN" color="#f8941f"/>
       </View>
       <View style={styles.contactSec}>
         <Text style={[styles.contactSecD, {fontWeight: 500}]}>Dr. Shyama Prasad Mukherjee University, Ranchi</Text>
@@ -97,6 +98,7 @@ const styles = StyleSheet.create({
     marginEnd: 1,
     height: 28,
     width: 28,
+    marginBottom: 10
   },
   formDetail:{
     height:80,
