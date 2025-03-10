@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import arrowForward from '../../assets/arrowForward.png';
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -49,21 +50,21 @@ const Calendar = () => {
         </Text>
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity style={styles.NxtMnthBtn} onPress={handlePrevMonth}>
-            <Text style={styles.arrow}>&lt;</Text>
+            <Image source={arrowForward} style={{height: 25, width: 25}} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.NxtMnthBtn} onPress={handleNextMonth}>
-            <Text style={styles.arrow}>&gt;</Text>
+            <Image source={arrowForward} style={{height: 25, width: 25}} />
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.calendar}>
-        <Text style={styles.day}>M</Text>
-        <Text style={styles.day}>T</Text>
-        <Text style={styles.day}>W</Text>
-        <Text style={styles.day}>T</Text>
-        <Text style={styles.day}>F</Text>
-        <Text style={styles.day}>S</Text>
-        <Text style={styles.day}>S</Text>
+      <View style={{flexDirection: 'row', gap: 5, marginBottom: 5}}>
+        <Text style={styles.calendarDays}>Mo</Text>
+        <Text style={styles.calendarDays}>Tu</Text>
+        <Text style={styles.calendarDays}>We</Text>
+        <Text style={styles.calendarDays}>Th</Text>
+        <Text style={styles.calendarDays}>Fr</Text>
+        <Text style={styles.calendarDays}>Sa</Text>
+        <Text style={styles.calendarDays}>Su</Text>
       </View>
       <View style={styles.calendar}>
         {daysInMonth.map((day) => renderDay(day))}
@@ -84,7 +85,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
-    paddingHorizontal: 5
+    paddingHorizontal: 5,
+    height: 55,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd'
   },
   NxtMnthBtn: {
     height: 40,
@@ -95,14 +99,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  arrow:{
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 700,
-  },
   month: {
     fontSize: 24,
     fontWeight: 'bold',
+  },
+  calendarDays: {
+    fontSize: 20,
+    // borderWidth : 1,
+    width: 46,
+    textAlign: 'center',
+    fontWeight: 600
   },
   calendar: {
     flexDirection: 'row',
@@ -114,7 +120,7 @@ const styles = StyleSheet.create({
     height: 46,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 4,
   },

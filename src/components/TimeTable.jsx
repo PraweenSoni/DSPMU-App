@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#1ab69d',
     padding: 10,
   },
   headerItem: {
@@ -59,7 +59,8 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#fff',
-    fontWeight: 'bold',
+    fontWeight: 700,
+    fontSize: 17
   },
   body: {
     marginTop: 10,

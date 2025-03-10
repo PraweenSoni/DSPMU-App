@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   formDetail:{
     height:80,
-    width: 280,
+    width: 200,
     borderRadius: 7,
     marginBottom: 10,
     alignItems: 'center',
