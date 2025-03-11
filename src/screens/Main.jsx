@@ -32,21 +32,15 @@ function Main() {
       <ScrollView nestedScrollEnabled={true} style={styles.noticeSec}>
         {/* <notice Box for all departement /> */}
         <Text style={{fontSize: 16, marginBottom: 10}}>All Notices</Text>
-        <Notices />
-        <Notices />
-        <Notices />
-        <Notices />
-        <Notices />
-        <Notices />
-        <Notices />
+        <Notices date={'10/10'} title={'New mwsasdsa'} message={'lorem10'}/>
+        <Notices date={'10/10'} title={'New mwsasdsa'} message={'lorem10'}/>
+        <Notices date={'10/10'} title={'New mwsasdsa'} message={'lorem10'}/>
       </ScrollView>
       <View>
         <Timetable />
-        {/* <TimeTable /> search morden design */}
         <Calendar />
-        {/* <academic calander also display/>using morden calander style like google calander */}
       </View>
-      <View style={{alignItems: 'center'}}>
+      <View style={styles.parentFormBox}>
         <FormBox num={15} formName="CLASS PRESENT" color="#1ab69d"/>
         <FormBox num={18} formName="TOTAL CLASS RUN" color="#ee4a62"/>
         <FormBox num={6} formName="LAB PRESENT" color="#8e56ff"/>
@@ -87,7 +81,28 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     maxHeight: 250,
   },
+  parentFormBox: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10
+  },
+  formDetail:{
+    height:80,
+    width: '45%',
+    borderRadius: 7,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f8f8f8'
+  },
+  formNumText:{
+    fontSize: 22,
+    fontWeight: 700
+  },
   contactSec: {
+    marginTop: 10,
     marginStart: 20
   },
   contactSecD: {
@@ -100,17 +115,5 @@ const styles = StyleSheet.create({
     width: 28,
     marginBottom: 10
   },
-  formDetail:{
-    height:80,
-    width: 200,
-    borderRadius: 7,
-    marginBottom: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#f8f8f8'
-  },
-  formNumText:{
-    fontSize: 22,
-    fontWeight: 700
-  }
+  
 })

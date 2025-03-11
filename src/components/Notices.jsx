@@ -1,14 +1,16 @@
-import { StyleSheet, Text, View } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Touchable } from 'react-native';
 
-function Notices() {
+function Notices({ title, message, date, onPress }) {
   return (
-    <View style={styles.notice}>
-      <Text style={styles.noticeDate}>12/01</Text>
-      <View>
-        <Text style={styles.noticeHead}>Notice Heading lorem.</Text>
-        <Text style={styles.noticeDetail}>Notice Some Details</Text>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.notice}>
+        <Text style={styles.noticeDate}>{date}</Text>
+        <View>
+          <Text style={styles.noticeTitle}>{title}</Text>
+          <Text>{message}</Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 
@@ -29,10 +31,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     textAlignVertical: 'center',
   },
-  noticeHead: {
+  noticeTitle: {
     fontWeight: 500,
   },
-  noticeDetail: {
-
-  }
 })

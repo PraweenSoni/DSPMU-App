@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import arrowForward from '../../assets/arrowForward.png';
+import arrowForward from '../../assets/arrowForwardW.png';
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -53,7 +53,7 @@ const Calendar = () => {
             <Image source={arrowForward} style={{height: 25, width: 25}} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.NxtMnthBtn} onPress={handleNextMonth}>
-            <Image source={arrowForward} style={{height: 25, width: 25}} />
+            <Image source={arrowForward} style={styles.rightArrow} />
           </TouchableOpacity>
         </View>
       </View>
@@ -109,6 +109,11 @@ const styles = StyleSheet.create({
     width: 46,
     textAlign: 'center',
     fontWeight: 600
+  },
+  rightArrow: {
+    height: 25,
+    width: 25,
+    transform: [{ rotateY: '180deg' }],
   },
   calendar: {
     flexDirection: 'row',

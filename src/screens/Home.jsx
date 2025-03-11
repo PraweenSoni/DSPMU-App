@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Main from './Main';
+// import NoticeList from '../components/NoticeList';
 import Notice from './Notice';
 import Other from './Other';
 import Profile from './Profile';
@@ -11,6 +12,7 @@ const Home = () => {
     <View style={{height: "100%"}}>
         <View style={{marginBottom: 42}}>
             {page === 0 && <Main />}
+            {/* {page === 1 && <NoticeList />} */}
             {page === 1 && <Notice />}
             {page === 2 && <Other />}
             {page === 3 && <Profile />}
