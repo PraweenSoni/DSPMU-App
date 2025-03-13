@@ -1,6 +1,8 @@
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { Image, Modal, ScrollView, StyleSheet, Text, View } from 'react-native';
 import Calendar from '../components/Calendar';
 import Timetable from '../components/TimeTable';
+import NoticePre from '../components/NoticePre';
 
 import userImg from '../../assets/user.png';
 import facebook from '../../assets/socialMediaIcons/facebook.png';
@@ -20,6 +22,21 @@ const FormBox = ({num, formName, color}) => {
 };
 
 function Main() {
+  const [selectedNotice, setSelectedNotice] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const notices = [
+    {title: 'Notice 1', message: 'This is notice 1', date: '23/12'},
+    {title: 'Notice 2', message: 'This is notice 2', date: '24/12'},
+    {title: 'Notice 3', message: 'This is notice 3', date: '25/12'},
+    {title: 'Notice 4', message: 'This is notice 4', date: '26/12'},
+    {title: 'Notice 5', message: 'This is notice 5', date: '27/12'},
+  ];
+
+  const handleNoticePress = (notice) => {
+    setSelectedNotice(notice);
+    setModalVisible(true);
+  };
   return (
     <ScrollView>
       <View style={styles.userDetail}>
@@ -32,9 +49,32 @@ function Main() {
       <ScrollView nestedScrollEnabled={true} style={styles.noticeSec}>
         {/* <notice Box for all departement /> */}
         <Text style={{fontSize: 16, marginBottom: 10}}>All Notices</Text>
-        <Notices date={'10/10'} title={'New mwsasdsa'} message={'lorem10'}/>
-        <Notices date={'10/10'} title={'New mwsasdsa'} message={'lorem10'}/>
-        <Notices date={'10/10'} title={'New mwsasdsa'} message={'lorem10'}/>
+        {notices.map((notice, index) => (
+          <Notices
+            key={index}
+            title={notice.title}
+            message={notice.message}
+            date={notice.date}
+            onPress={() => handleNoticePress(notice)}
+          />
+        ))}
+        {selectedNotice && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalContainer}>
+            <NoticePre
+              title={selectedNotice.title}
+              message={selectedNotice.message}
+              date={selectedNotice.date}
+              onClose={() => setModalVisible(false)}
+            />
+          </View>
+        </Modal>
+      )}
       </ScrollView>
       <View>
         <Timetable />
@@ -95,7 +135,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#f8f8f8'
+    backgroundColor: '#ededed'
   },
   formNumText:{
     fontSize: 22,
