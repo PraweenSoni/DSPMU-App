@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Image, StyleSheet, Text, View, TouchableOpacity, BackHandler } from "react-native";
-import userImg from '../../assets/user.png';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import { fetchUserData } from "../services/apiService";
 import arrowForward from '../../assets/arrowForward.png';
+import userImg from '../../assets/user.png';
 
 import Feedback from '../screens/profileSecPages/Feedback';
 import ReAddmission from "./profileSecPages/ReAddmission";
@@ -9,7 +11,24 @@ import Start from "./Start";
 
 function Profile() {
   const [currentPage, setCurrentPage] = useState("profile");
-
+  const userToken = "";
+  const [studentName, setStudentName] = useState('');
+  const [studentSubject, setStudentSubject] = useState('');
+  const [studentDepart, setStudentDepart] = useState('');
+  
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      const data = await fetchUserData("stuDetails/stuDetails", userToken);
+      if (data && data.user) {  
+        setStudentName(data.user.name || "N/A");
+        setStudentSubject(data.user.subject || "N/A");
+        setStudentDepart(data.user.department || "N/A");
+      }
+    };
+  
+    loadUserProfile();
+  }, []);
+  
   // Handle Android Back Button Press
   useEffect(() => {
     const backAction = () => {
@@ -25,7 +44,7 @@ function Profile() {
   }, [currentPage]);
 
   // Render different pages based on `currentPage`
-  if (currentPage === "reAddmission") return <ReAddmission goBack={() => setCurrentPage("profile")} />;
+  if (currentPage === "reAddmission") return <ReAddmission userToken={userToken} goBack={() => setCurrentPage("profile")} />;
   if (currentPage === "feedback") return <Feedback goBack={() => setCurrentPage("profile")} />;
   if (currentPage === "start") return <Start />; // Redirect to Start page on Logout
 
@@ -34,9 +53,9 @@ function Profile() {
       <Text style={{ fontSize: 30, fontWeight: '600', marginBottom: 20 }}>DSPMU, Ranchi</Text>
       <Image style={styles.userImg} source={userImg} />
       <View style={{ width: '100%', alignItems: 'center', marginTop: 10 }}>
-        <Text style={{ fontSize: 22, fontWeight: '500' }}>User Name</Text>
-        <Text style={{ fontSize: 18 }}>Subject</Text>
-        <Text style={{ fontSize: 18 }}>Department</Text>
+        <Text style={{ fontSize: 22, fontWeight: '500' }}>{studentName}</Text>
+        <Text style={{ fontSize: 18 }}>{studentSubject}</Text>
+        <Text style={{ fontSize: 18 }}>{studentDepart}</Text>
       </View>
       <View style={styles.menu}>
         {/* Edit Profile Request */}
