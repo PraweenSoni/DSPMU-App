@@ -1,17 +1,20 @@
 // components/NoticePreview.js
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 
 const NoticePre = ({ title, message, date, onClose }) => {
   return (
     <View style={styles.container}>
-        <View style={{backgroundColor: '#888888', flexDirection: 'row'}}>
+        <View style={{backgroundColor: '#1cb69d', flexDirection: 'row'}}>
             <Text style={styles.title}>{title}</Text>
         </View>
         <View style={{padding: '5%'}}>
             <Text style={styles.message}>{message}</Text>
             <Text >{date}</Text>
-            <Button title="Close" onPress={onClose} />
+            <TouchableOpacity style={styles.button} onPress={onClose}>
+              <Text style={styles.buttonText}>Close</Text>
+            </TouchableOpacity>
+            {/* <Button style={{backgroundColor: '#ee4a63'}} title="Close" onPress={onClose} /> */}
         </View>
     </View>
   );
@@ -32,12 +35,24 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: '#000',
     marginHorizontal: '5%',
-    marginVertical: '2%'
+    marginVertical: '2%',
+    color: '#fff'
   },
   message: {
     fontSize: 16,
     color: '#721c24',
     marginBottom: 10,
+  },
+  button: {
+    backgroundColor: '#ee4a63',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 600,
+    textAlign: 'center',
   },
 });
 
