@@ -1,6 +1,7 @@
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 const API_BASE_URL = ""; 
-
-export const fetchUserData = async (endpoint, userToken) => {
+export const fetchUserData = async (endpoint) => {
+  const userToken = "";
   try {
     const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
       method: "GET",

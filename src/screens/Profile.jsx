@@ -11,14 +11,14 @@ import Start from "./Start";
 
 function Profile() {
   const [currentPage, setCurrentPage] = useState("profile");
-  const userToken = "";
+  
   const [studentName, setStudentName] = useState('');
   const [studentSubject, setStudentSubject] = useState('');
   const [studentDepart, setStudentDepart] = useState('');
   
   useEffect(() => {
     const loadUserProfile = async () => {
-      const data = await fetchUserData("stuDetails/stuDetails", userToken);
+      const data = await fetchUserData("stuDetails/stuDetails");
       if (data && data.user) {  
         setStudentName(data.user.name || "N/A");
         setStudentSubject(data.user.subject || "N/A");
@@ -44,7 +44,7 @@ function Profile() {
   }, [currentPage]);
 
   // Render different pages based on `currentPage`
-  if (currentPage === "reAddmission") return <ReAddmission userToken={userToken} goBack={() => setCurrentPage("profile")} />;
+  if (currentPage === "reAddmission") return <ReAddmission goBack={() => setCurrentPage("profile")} />;
   if (currentPage === "feedback") return <Feedback goBack={() => setCurrentPage("profile")} />;
   if (currentPage === "start") return <Start />; // Redirect to Start page on Logout
 

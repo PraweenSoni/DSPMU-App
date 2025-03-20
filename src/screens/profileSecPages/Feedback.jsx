@@ -1,37 +1,91 @@
-import React, { useState } from 'react';
-import arrowForward from '../../../assets/arrowForward.png'
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
+import { fetchUserData } from '../../services/apiService';
+import arrowForward from '../../../assets/arrowForward.png';
 
-const Feedback = ({ goBack }) => {
+const Feedback = ({goBack}) => { 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [feedback, setFeedback] = useState('');
   const [rating, setRating] = useState(0);
 
+  useEffect(() => {
+    const loadStudentDetails = async () => {
+      try {
+        const data = await fetchUserData("stuDetails/stuDetails");
+        if (data) {
+          setName(data.user.name);
+          setEmail(data.user.email);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    loadStudentDetails();
+  }, []);
+
+  const submitFeedback = async () => { // Handle the POST request here
+    const url = ''; // Replace with your actual backend URL
+    const feedbackData = {
+      name: name,
+      email: email,
+      feedback: feedback,
+      rating: rating,
+    };
+
+    try {
+      const userToken = "";
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(feedbackData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        Alert.alert('Success', 'Feedback submitted successfully!');
+        console.log('Response:', result);
+      } else {
+        const error = await response.json();
+        Alert.alert('Error', 'Failed to submit feedback!');
+        console.error('Error:', error);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Something went wrong!');
+      console.error('Network Error:', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={goBack}>
+      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={goBack}>
         <Image style={styles.arrowForward} source={arrowForward} />
         <Text style={styles.backButton}>BACK</Text>
       </TouchableOpacity>
 
       <Text style={styles.title}>Feedback Form</Text>
-      
+
       <TextInput
-        style={styles.input}
+        style={[styles.input, { backgroundColor: '#f2f2f2' }]}
         placeholder="Your Name"
         placeholderTextColor="#999"
         value={name}
         onChangeText={setName}
+        editable={false}
       />
 
       <TextInput
-        style={styles.input}
+        style={[styles.input, { backgroundColor: '#f2f2f2' }]}
         placeholder="Your Email"
         placeholderTextColor="#999"
         keyboardType="email-address"
         value={email}
         onChangeText={setEmail}
+        editable={false}
       />
 
       <TextInput
@@ -52,7 +106,7 @@ const Feedback = ({ goBack }) => {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={() => alert('Not working now!')}>
+      <TouchableOpacity style={styles.button} onPress={submitFeedback}>
         <Text style={styles.buttonText}>Submit Feedback</Text>
       </TouchableOpacity>
     </View>
@@ -61,7 +115,6 @@ const Feedback = ({ goBack }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     padding: 20,
     backgroundColor: '#f8f8f8',
     justifyContent: 'center',
@@ -69,7 +122,7 @@ const styles = StyleSheet.create({
   backButton: {
     fontSize: 18,
     color: '#000',
-    fontWeight: 500,
+    fontWeight: '500',
   },
   arrowForward: {
     height: 17,
