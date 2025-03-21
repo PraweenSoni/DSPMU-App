@@ -29,7 +29,9 @@ function Main() {
     const loadUserProfile = async () => {
       const data = await fetchUserData("stuDetails/stuDetails");
       if (data && data.user) {
-        setStudentName(data.user.name || "N/A");
+        setStudentName(data.user.name);
+      }else{
+        setStudentName("Name Not found!");
       }
     };
 
@@ -38,13 +40,30 @@ function Main() {
   const [selectedNotice, setSelectedNotice] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const notices = [
-    { title: 'Notice 1', message: 'This is notice 1', date: '23/12' },
-    { title: 'Notice 2', message: 'This is notice 2', date: '24/12' },
-    { title: 'Notice 3', message: 'This is notice 3', date: '25/12' },
-    { title: 'Notice 4', message: 'This is notice 4', date: '26/12' },
-    { title: 'Notice 5', message: 'This is notice 5', date: '27/12' },
-  ];
+  // Fetch Notices from server 
+  const [notices, setNotices] = useState([]);
+
+  useEffect(() => {
+    const fetchNotices = async () => {
+      try {
+        const response = await fetch('');
+        const data = await response.json();
+        
+        // Extract and map API data to fit the expected format
+        const formattedNotices = data.commanNotification.map((notice) => ({
+          title: notice.cNotifiTitle,
+          message: notice.cNotifiMsg,
+          date: new Date(notice.date).toLocaleDateString(), // Format date as desired
+        }));   
+
+        setNotices(formattedNotices);
+      } catch (error) {
+        console.error('Error fetching notices:', error);
+      }
+    };
+
+    fetchNotices();
+  }, []);
 
   const handleNoticePress = (notice) => {
     setSelectedNotice(notice);
@@ -65,6 +84,11 @@ function Main() {
         setClspre(data.user.clspre);
         setTlabrun(data.user.tlabrun);
         setLabpre(data.user.labpre);
+      }else{
+        setTclsrun("N/A");
+        setClspre("N/A");
+        setTlabrun("N/A");
+        setLabpre("N/A");
       }
     };
 

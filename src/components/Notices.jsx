@@ -1,5 +1,9 @@
 import { View, Text, TouchableOpacity, StyleSheet, Touchable } from 'react-native';
 
+//  const date = new Date(dateString);
+//  const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+//  in future fix that display this format of date (24/12)
+
 function Notices({ title, message, date, onPress }) {
   return (
     <TouchableOpacity onPress={onPress}>
@@ -11,7 +15,7 @@ function Notices({ title, message, date, onPress }) {
         </View>
       </View>
     </TouchableOpacity>
-  )
+  );
 }
 
 export default Notices;

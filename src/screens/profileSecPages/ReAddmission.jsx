@@ -16,6 +16,11 @@ const ReadmissionFeesPage = () => {
         setStudentID(data.user.registrationNo);
         setSemester(data.user.semester);
         setAmount(data.user.amount);
+      }else{
+        setStudentName("N/A");
+        setStudentID("N/A");
+        setSemester("N/A");
+        setAmount("N/A");
       }
     };
 

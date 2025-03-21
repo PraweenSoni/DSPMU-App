@@ -23,6 +23,10 @@ function Profile() {
         setStudentName(data.user.name || "N/A");
         setStudentSubject(data.user.subject || "N/A");
         setStudentDepart(data.user.department || "N/A");
+      }else{
+        setStudentName("N/A");
+        setStudentSubject("N/A");
+        setStudentDepart("N/A");
       }
     };
   

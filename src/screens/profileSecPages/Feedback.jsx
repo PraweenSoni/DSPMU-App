@@ -16,6 +16,9 @@ const Feedback = ({goBack}) => {
         if (data) {
           setName(data.user.name);
           setEmail(data.user.email);
+        }else{
+          setName("N/A");
+          setEmail("N/A");
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
