@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } fro
 import { fetchUserData } from '../../services/apiService';
 import arrowForward from '../../../assets/arrowForward.png';
 
-const Feedback = ({goBack}) => { 
+const Feedback = () => { 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [feedback, setFeedback] = useState('');
@@ -65,7 +65,7 @@ const Feedback = ({goBack}) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }} onPress={goBack}>
+      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Image style={styles.arrowForward} source={arrowForward} />
         <Text style={styles.backButton}>BACK</Text>
       </TouchableOpacity>

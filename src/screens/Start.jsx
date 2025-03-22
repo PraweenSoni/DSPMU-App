@@ -3,7 +3,7 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import logo from '../../assets/logo.png';
 import arrowForward from '../../assets/arrowForwardW.png'
 
-const Start = ({ setPage }) => {
+const Start = (props) => {
   return (
     <View style={{ height: '100%', justifyContent: 'center', backgroundColor: '#fff' }}>
       <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -12,7 +12,7 @@ const Start = ({ setPage }) => {
       </View>
       <View style={styles.bottom}>
         <Text style={{ color: "#fff", fontSize: 18, marginBottom: 10 }}>Welcome to DSPMU, Ranchi</Text>
-        <Pressable style={styles.btn} onPress={() => setPage('Home')}>
+        <Pressable style={styles.btn} onPress={()=> props.navigation.navigate('Home')}>
           <Text style={{ color: '#fff', fontSize: 20, fontWeight: '500' }}>Get Start</Text>
           <Image style={styles.arrowForward} source={arrowForward}/>
         </Pressable>

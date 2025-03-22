@@ -1,56 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { Image, StyleSheet, Text, View, TouchableOpacity, BackHandler } from "react-native";
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { fetchUserData } from "../services/apiService";
 import arrowForward from '../../assets/arrowForward.png';
 import userImg from '../../assets/user.png';
 
-import Feedback from '../screens/profileSecPages/Feedback';
-import ReAddmission from "./profileSecPages/ReAddmission";
-import Start from "./Start";
-
-function Profile() {
-  const [currentPage, setCurrentPage] = useState("profile");
-  
+const Profile = (props) => {
   const [studentName, setStudentName] = useState('');
   const [studentSubject, setStudentSubject] = useState('');
   const [studentDepart, setStudentDepart] = useState('');
-  
+
   useEffect(() => {
     const loadUserProfile = async () => {
       const data = await fetchUserData("stuDetails/stuDetails");
-      if (data && data.user) {  
+      if (data && data.user) {
         setStudentName(data.user.name || "N/A");
         setStudentSubject(data.user.subject || "N/A");
         setStudentDepart(data.user.department || "N/A");
-      }else{
+      } else {
         setStudentName("N/A");
         setStudentSubject("N/A");
         setStudentDepart("N/A");
       }
     };
-  
+
     loadUserProfile();
   }, []);
-  
-  // Handle Android Back Button Press
-  useEffect(() => {
-    const backAction = () => {
-      if (currentPage !== "profile") {
-        setCurrentPage("profile"); // Go back to Profile instead of exiting app
-        return true; // Prevent app from closing
-      }
-      return false; // Allow default behavior when on Profile
-    };
-
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", backAction);
-    return () => backHandler.remove();
-  }, [currentPage]);
-
-  // Render different pages based on `currentPage`
-  if (currentPage === "reAddmission") return <ReAddmission goBack={() => setCurrentPage("profile")} />;
-  if (currentPage === "feedback") return <Feedback goBack={() => setCurrentPage("profile")} />;
-  if (currentPage === "start") return <Start />; // Redirect to Start page on Logout
 
   return (
     <View style={{ height: '100%', alignItems: 'center', top: 80 }}>
@@ -62,7 +36,6 @@ function Profile() {
         <Text style={{ fontSize: 18 }}>{studentDepart}</Text>
       </View>
       <View style={styles.menu}>
-        {/* Edit Profile Request */}
         <TouchableOpacity>
           <View style={styles.menuList}>
             <Text style={styles.menuListText}>Edit Profile Request</Text>
@@ -70,28 +43,49 @@ function Profile() {
           </View>
         </TouchableOpacity>
 
-        <View style={styles.menuList}><Text style={styles.menuListText}>Result</Text><Image style={styles.arrowForward} source={arrowForward} /></View>
-        <View style={styles.menuList}><Text style={styles.menuListText}>Syllabus</Text><Image style={styles.arrowForward} source={arrowForward} /></View>
-        <View style={styles.menuList}><Text style={styles.menuListText}>Exam schedules</Text><Image style={styles.arrowForward} source={arrowForward} /></View>
+        <TouchableOpacity>
+          <View style={styles.menuList}>
+            <Text style={styles.menuListText}>Result</Text>
+            <Image style={styles.arrowForward} source={arrowForward} />
+          </View>
+        </TouchableOpacity>
 
-        {/* ReeAddmission Fees */}
-        <TouchableOpacity onPress={() => setCurrentPage("reAddmission")}>
+        <TouchableOpacity>
+          <View style={styles.menuList}>
+            <Text style={styles.menuListText}>Syllabus</Text>
+            <Image style={styles.arrowForward} source={arrowForward} />
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity>
+          <View style={styles.menuList}>
+            <Text style={styles.menuListText}>Exam schedules</Text>
+            <Image style={styles.arrowForward} source={arrowForward} />
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={()=>props.navigation.navigate('ReAddmission')}>
           <View style={styles.menuList}>
             <Text style={styles.menuListText}>Readmission Fees</Text>
             <Image style={styles.arrowForward} source={arrowForward} />
           </View>
         </TouchableOpacity>
 
-        {/* Feedback */}
-        <TouchableOpacity onPress={() => setCurrentPage("feedback")}>
+        <TouchableOpacity onPress={()=>props.navigation.navigate('Other')}>
+          <View style={styles.menuList}>
+            <Text style={styles.menuListText}>Other</Text>
+            <Image style={styles.arrowForward} source={arrowForward} />
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={()=>props.navigation.navigate('Feedback')}>
           <View style={styles.menuList}>
             <Text style={styles.menuListText}>Feedback</Text>
             <Image style={styles.arrowForward} source={arrowForward} />
           </View>
         </TouchableOpacity>
 
-        {/* Logout */}
-        <TouchableOpacity onPress={() => setCurrentPage("start")}>
+        <TouchableOpacity >
           <View style={styles.menuList}>
             <Text style={styles.menuListText}>Log Out</Text>
             <Image style={styles.arrowForward} source={arrowForward} />
@@ -100,7 +94,7 @@ function Profile() {
       </View>
     </View>
   );
-}
+};
 
 export default Profile;
 

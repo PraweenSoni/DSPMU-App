@@ -1,6 +1,6 @@
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 
-function Register() {
+function Register(props) {
   return (
     <View
       style={{height: '100%', justifyContent: 'center', alignItems: 'center'}}>
@@ -13,7 +13,7 @@ function Register() {
         <Text style={[styles.btnTxt, {color: '#fff'}]}>Register</Text>
       </Pressable>
       <Pressable style={styles.btn}>
-        <Text style={styles.btnTxt}>Log In</Text>
+        <Text style={styles.btnTxt} onPress={()=> props.navigation.navigate('Login')}>Log In</Text>
       </Pressable>
     </View>
   );

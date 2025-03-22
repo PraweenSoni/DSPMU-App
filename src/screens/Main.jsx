@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Image, Modal, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Calendar from '../components/Calendar';
 import Timetable from '../components/TimeTable';
 import NoticePre from '../components/NoticePre';
@@ -12,6 +12,7 @@ import twitter from '../../assets/socialMediaIcons/twitter.png';
 import instagram from '../../assets/socialMediaIcons/instagram.png';
 import youtube from '../../assets/socialMediaIcons/youtube.png';
 import Notices from '../components/Notices';
+import { useNavigation } from '@react-navigation/native';
 
 const FormBox = ({ num, formName, color }) => {
   return (
@@ -24,13 +25,14 @@ const FormBox = ({ num, formName, color }) => {
 
 function Main() {
   // Login user name fetch
+  const navigation = useNavigation();
   const [studentName, setStudentName] = useState('');
   useEffect(() => {
     const loadUserProfile = async () => {
       const data = await fetchUserData("stuDetails/stuDetails");
       if (data && data.user) {
         setStudentName(data.user.name);
-      }else{
+      } else {
         setStudentName("Name Not found!");
       }
     };
@@ -46,15 +48,15 @@ function Main() {
   useEffect(() => {
     const fetchNotices = async () => {
       try {
-        const response = await fetch('');
+        const response = await fetch('http://192.168.89.28:3000/api/cNotifi/');
         const data = await response.json();
-        
+
         // Extract and map API data to fit the expected format
         const formattedNotices = data.commanNotification.map((notice) => ({
           title: notice.cNotifiTitle,
           message: notice.cNotifiMsg,
           date: new Date(notice.date).toLocaleDateString(), // Format date as desired
-        }));   
+        }));
 
         setNotices(formattedNotices);
       } catch (error) {
@@ -84,7 +86,7 @@ function Main() {
         setClspre(data.user.clspre);
         setTlabrun(data.user.tlabrun);
         setLabpre(data.user.labpre);
-      }else{
+      } else {
         setTclsrun("N/A");
         setClspre("N/A");
         setTlabrun("N/A");
@@ -95,7 +97,6 @@ function Main() {
     loadStudentPreDetail();
   }, []);
 
-
   return (
     <ScrollView>
       <View style={styles.userDetail}>
@@ -103,11 +104,15 @@ function Main() {
           <Text>DSPMU, Ranchi</Text>
           <Text style={{ fontWeight: 500 }}>Hi, {studentName}</Text>
         </View>
-        <Image style={styles.userImg} source={userImg} />
+        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          <Image style={styles.userImg} source={userImg} />
+        </TouchableOpacity>
       </View>
+      <TouchableOpacity onPress={() => navigation.navigate("Notice")}>
+        <Text style={{ fontSize: 16, marginBottom: 10, marginStart: 10 }}>View All Notices </Text>
+      </TouchableOpacity>
       <ScrollView nestedScrollEnabled={true} style={styles.noticeSec}>
         {/* <notice Box for all departement /> */}
-        <Text style={{ fontSize: 16, marginBottom: 10 }}>All Notices</Text>
         {notices.map((notice, index) => (
           <Notices
             key={index}
@@ -171,7 +176,7 @@ const styles = StyleSheet.create({
     margin: 10
   },
   userImg: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 100,
     height: 42,
     width: 42,
