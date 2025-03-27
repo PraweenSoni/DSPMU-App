@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+
 import Calendar from '../components/Calendar';
 import Timetable from '../components/TimeTable';
 import NoticePre from '../components/NoticePre';
+import Notices from '../components/Notices';
 import { fetchUserData } from '../services/apiService';
 
 import userImg from '../../assets/user.png';
@@ -12,92 +15,76 @@ import linkedin from '../../assets/socialMediaIcons/linkedin.png';
 import twitter from '../../assets/socialMediaIcons/twitter.png';
 import instagram from '../../assets/socialMediaIcons/instagram.png';
 import youtube from '../../assets/socialMediaIcons/youtube.png';
-import Notices from '../components/Notices';
-import { useNavigation } from '@react-navigation/native';
 
-const FormBox = ({ num, formName, color }) => {
-  return (
-    <View style={styles.formDetail}>
-      <Text style={[styles.formNumText, { color: color }]}>{num}</Text>
-      <Text>{formName}</Text>
-    </View>
-  );
-};
+const FormBox = ({ num, formName, color }) => (
+  <View style={styles.formDetail}>
+    <Text style={[styles.formNumText, { color }]}>{num}</Text>
+    <Text>{formName}</Text>
+  </View>
+);
 
-function Main() {
+const Main = () => {
   const navigation = useNavigation();
   const [studentName, setStudentName] = useState('');
-
-  useEffect(async () => {
-    const token = await AsyncStorage.getItem("token");
-    const loadUserProfile = async () => {
-      const data = await fetchUserData("stuDetails/stuDetails", token);
-      if (data && data.user) {
-        setStudentName(data.user.name);
-      } else {
-        setStudentName("Name Not found!");
-      }
-    };
-
-    loadUserProfile();
-  }, []);
+  const [notices, setNotices] = useState([]);
   const [selectedNotice, setSelectedNotice] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [attendance, setAttendance] = useState({ tclsrun: 'N/A', clspre: 'N/A', tlabrun: 'N/A', labpre: 'N/A' });
 
-  // Fetch Notices from server 
-  const [notices, setNotices] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const token = await AsyncStorage.getItem("token");
+      if (!token) return;
+      
+      const userData = await fetchUserData("stuDetails/stuDetails", token);
+      setStudentName(userData?.user?.name || "Name Not Found!");
+    })();
+  }, []);
 
   useEffect(() => {
     const fetchNotices = async () => {
       try {
-        const response = await fetch('http://192.168.24.28:3000/api/notifi/');
+        const response = await fetch('http://192.168.24.28:3000/api/notice/');
         const data = await response.json();
-
-        // Extract and map API data to fit the expected format
-        const formattedNotices = data.commanNotification.map((notice) => ({
-          title: notice.cNotifiTitle,
-          message: notice.cNotifiMsg,
-          date: new Date(notice.date).toLocaleDateString(), // Format date as desired
-        }));
-
+  
+        if (!data.Notice) {
+          console.error("No notices found!");
+          return;
+        }
+  
+        // Filter notices for "User" department
+        const formattedNotices = data.Notice
+          .filter((notice) => notice.department === "BSC CA")
+          .map((notice) => ({
+            title: notice.noticeTitle,
+            message: notice.noticeMsg,
+            date: new Date(notice.date).toLocaleDateString(),
+          }));
+  
         setNotices(formattedNotices);
       } catch (error) {
-        console.error('Error fetching notices :', error);
+        console.error("Error fetching notices:", error);
       }
     };
-
+  
     fetchNotices();
-  }, []);
-
-  const handleNoticePress = (notice) => {
-    setSelectedNotice(notice);
-    setModalVisible(true);
-  };
-
-  // Code for Student present in class & lab
-  const [tclsrun, setTclsrun] = useState('');
-  const [clspre, setClspre] = useState('');
-  const [tlabrun, setTlabrun] = useState('');
-  const [labpre, setLabpre] = useState('');
+  }, []);  
 
   useEffect(() => {
-    const loadStudentPreDetail = async () => {
+    (async () => {
       const token = await AsyncStorage.getItem("token");
-      const data = await fetchUserData("stuPresent/stuPresent", token);
-      if (data) {
-        setTclsrun(data.user.tclsrun);
-        setClspre(data.user.clspre);
-        setTlabrun(data.user.tlabrun);
-        setLabpre(data.user.labpre);
-      } else {
-        setTclsrun("N/A");
-        setClspre("N/A");
-        setTlabrun("N/A");
-        setLabpre("N/A");
-      }
-    };
+      if (!token) return;
 
-    loadStudentPreDetail();
+      const data = await fetchUserData("stuPresent/stuPresent", token);
+      if (data?.user) {
+        setAttendance({
+          tclsrun: data.user.tclsrun || "N/A",
+          clspre: data.user.clspre || "N/A",
+          tlabrun: data.user.tlabrun || "N/A",
+          labpre: data.user.labpre || "N/A",
+        });
+      }
+    })();
   }, []);
 
   return (
@@ -105,122 +92,72 @@ function Main() {
       <View style={styles.userDetail}>
         <View>
           <Text>DSPMU, Ranchi</Text>
-          <Text style={{ fontWeight: 500 }}>Hi, {studentName}</Text>
+          <Text style={styles.greeting}>Hi, {studentName}</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Profile")}> 
           <Image style={styles.userImg} source={userImg} />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate("Notice")}>
-        <Text style={{ fontSize: 16, marginBottom: 10, marginStart: 10 }}>View All Notices </Text>
+      
+      <TouchableOpacity onPress={() => navigation.navigate("Notice")}> 
+        <Text style={styles.noticeHeader}>View All Notices</Text>
       </TouchableOpacity>
-      <ScrollView nestedScrollEnabled={true} style={styles.noticeSec}>
-        {/* <notice Box for all departement /> */}
+      
+      <ScrollView nestedScrollEnabled style={styles.noticeSec}>
         {notices.map((notice, index) => (
-          <Notices
-            key={index}
-            title={notice.title}
-            message={notice.message}
-            date={notice.date}
-            onPress={() => handleNoticePress(notice)}
-          />
+          <Notices key={index} {...notice} onPress={() => {
+            setSelectedNotice(notice);
+            setModalVisible(true);
+          }} />
         ))}
-        {selectedNotice && (
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => setModalVisible(false)}
-          >
-            <View style={styles.modalContainer}>
-              <NoticePre
-                title={selectedNotice.title}
-                message={selectedNotice.message}
-                date={selectedNotice.date}
-                onClose={() => setModalVisible(false)}
-              />
-            </View>
-          </Modal>
-        )}
       </ScrollView>
-      <View>
-        <Timetable />
-        <Calendar />
-      </View>
+      
+      {selectedNotice && (
+        <Modal animationType="slide" transparent visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
+          <View style={styles.modalContainer}>
+            <NoticePre {...selectedNotice} onClose={() => setModalVisible(false)} />
+          </View>
+        </Modal>
+      )}
+      
+      <Timetable />
+      <Calendar />
+      
       <View style={styles.parentFormBox}>
-        <FormBox num={clspre} formName="CLASS PRESENT" color="#1ab69d" />
-        <FormBox num={tclsrun} formName="TOTAL CLASS RUN" color="#ee4a62" />
-        <FormBox num={labpre} formName="LAB PRESENT" color="#8e56ff" />
-        <FormBox num={tlabrun} formName="TOTAL LAB RUN" color="#f8941f" />
+        <FormBox num={attendance.clspre} formName="CLASS PRESENT" color="#1ab69d" />
+        <FormBox num={attendance.tclsrun} formName="TOTAL CLASS RUN" color="#ee4a62" />
+        <FormBox num={attendance.labpre} formName="LAB PRESENT" color="#8e56ff" />
+        <FormBox num={attendance.tlabrun} formName="TOTAL LAB RUN" color="#f8941f" />
       </View>
+      
       <View style={styles.contactSec}>
-        <Text style={[styles.contactSecD, { fontWeight: 500 }]}>Dr. Shyama Prasad Mukherjee University, Ranchi</Text>
-        <Text style={styles.contactSecD}><Text style={{ fontWeight: 500 }}>Add : </Text>P.O. - Ranchi University Morabadi, Ranchi-834008</Text>
-        <Text style={styles.contactSecD}><Text style={{ fontWeight: 500 }}>Call : </Text>+91 860 304 ****</Text>
-        <Text style={styles.contactSecD}><Text style={{ fontWeight: 500 }}>Email : </Text>regi****@dspmuranchi.ac.in</Text>
-        <View style={styles.contactSecD}>
-          <Image style={styles.socialMediaImg} source={facebook} />
-          <Image style={styles.socialMediaImg} source={instagram} />
-          <Image style={styles.socialMediaImg} source={youtube} />
-          <Image style={styles.socialMediaImg} source={linkedin} />
-          <Image style={styles.socialMediaImg} source={twitter} />
+        <Text style={styles.contactTitle}>Dr. Shyama Prasad Mukherjee University, Ranchi</Text>
+        <Text>Add: P.O. - Ranchi University, Morabadi, Ranchi-834008</Text>
+        <Text>Call: +91 860 304 ****</Text>
+        <Text>Email: regi****@dspmuranchi.ac.in</Text>
+        <View style={styles.socialIcons}>
+          {[facebook, instagram, youtube, linkedin, twitter].map((icon, index) => (
+            <Image key={index} style={styles.socialMediaImg} source={icon} />
+          ))}
         </View>
       </View>
     </ScrollView>
-  )
-}
+  );
+};
 
 export default Main;
 
 const styles = StyleSheet.create({
-  userDetail: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    margin: 10
-  },
-  userImg: {
-    borderWidth: 2,
-    borderRadius: 100,
-    height: 42,
-    width: 42,
-  },
-  noticeSec: {
-    marginLeft: 10,
-    maxHeight: 250,
-  },
-  parentFormBox: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10
-  },
-  formDetail: {
-    height: 80,
-    width: '45%',
-    borderRadius: 7,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ededed'
-  },
-  formNumText: {
-    fontSize: 22,
-    fontWeight: 700
-  },
-  contactSec: {
-    marginTop: 10,
-    marginStart: 20
-  },
-  contactSecD: {
-    marginVertical: 1,
-    flexDirection: 'row'
-  },
-  socialMediaImg: {
-    marginEnd: 1,
-    height: 28,
-    width: 28,
-    marginBottom: 10
-  },
-
-})
+  userDetail: { flexDirection: 'row', justifyContent: 'space-between', margin: 10 },
+  greeting: { fontWeight: '500' },
+  userImg: { borderWidth: 2, borderRadius: 100, height: 42, width: 42 },
+  noticeHeader: { fontSize: 16, marginBottom: 10, marginStart: 10 },
+  noticeSec: { marginLeft: 10, maxHeight: 250 },
+  parentFormBox: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, justifyContent: 'center' },
+  formDetail: { height: 80, width: '45%', borderRadius: 7, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ededed' },
+  formNumText: { fontSize: 22, fontWeight: '700' },
+  contactSec: { marginTop: 10, marginStart: 20 },
+  contactTitle: { fontWeight: '500' },
+  socialIcons: { flexDirection: 'row', marginVertical: 10 },
+  socialMediaImg: { height: 28, width: 28, marginHorizontal: 5 },
+});
