@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { fetchUserData } from '../../services/apiService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ReadmissionFeesPage = () => {
   const [studentName, setStudentName] = useState('');
@@ -10,7 +11,8 @@ const ReadmissionFeesPage = () => {
 
   useEffect(() => {
     const loadStudentDetails = async () => {
-      const data = await fetchUserData("stuDetails/stuDetails");
+      const token = await AsyncStorage.getItem("token");
+      const data = await fetchUserData("stuDetails/stuDetails", token);
       if (data) {
         setStudentName(data.user.name);
         setStudentID(data.user.registrationNo);

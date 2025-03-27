@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { Image, StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { fetchUserData } from "../services/apiService";
 import arrowForward from '../../assets/arrowForward.png';
 import userImg from '../../assets/user.png';
@@ -11,20 +12,40 @@ const Profile = (props) => {
 
   useEffect(() => {
     const loadUserProfile = async () => {
-      const data = await fetchUserData("stuDetails/stuDetails");
-      if (data && data.user) {
-        setStudentName(data.user.name || "N/A");
-        setStudentSubject(data.user.subject || "N/A");
-        setStudentDepart(data.user.department || "N/A");
-      } else {
-        setStudentName("N/A");
-        setStudentSubject("N/A");
-        setStudentDepart("N/A");
+      try {
+        const token = await AsyncStorage.getItem("token");
+        if (!token) {
+          props.navigation.replace("Start");
+          return;
+        }
+        
+        const data = await fetchUserData("stuDetails/stuDetails", token);
+        if (data && data.user) {
+          setStudentName(data.user.name || "N/A");
+          setStudentSubject(data.user.subject || "N/A");
+          setStudentDepart(data.user.department || "N/A");
+        } else {
+          setStudentName("N/A");
+          setStudentSubject("N/A");
+          setStudentDepart("N/A");
+        }
+      } catch (error) {
+        console.error("Error loading user profile:", error);
       }
     };
 
     loadUserProfile();
   }, []);
+
+  // Logout function
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.removeItem("token");
+      props.navigation.replace("Start"); 
+    } catch (error) {
+      Alert.alert("Logout Failed", "Something went wrong. Please try again.");
+    }
+  };
 
   return (
     <View style={{ height: '100%', alignItems: 'center', top: 80 }}>
@@ -64,30 +85,30 @@ const Profile = (props) => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={()=>props.navigation.navigate('ReAddmission')}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('ReAddmission')}>
           <View style={styles.menuList}>
             <Text style={styles.menuListText}>Readmission Fees</Text>
             <Image style={styles.arrowForward} source={arrowForward} />
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={()=>props.navigation.navigate('Other')}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Other')}>
           <View style={styles.menuList}>
             <Text style={styles.menuListText}>Other</Text>
             <Image style={styles.arrowForward} source={arrowForward} />
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={()=>props.navigation.navigate('Feedback')}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('Feedback')}>
           <View style={styles.menuList}>
             <Text style={styles.menuListText}>Feedback</Text>
             <Image style={styles.arrowForward} source={arrowForward} />
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity >
+        <TouchableOpacity onPress={handleLogout}>
           <View style={styles.menuList}>
-            <Text style={styles.menuListText}>Log Out</Text>
+            <Text style={[styles.menuListText, { color: "red" }]}>Log Out</Text>
             <Image style={styles.arrowForward} source={arrowForward} />
           </View>
         </TouchableOpacity>

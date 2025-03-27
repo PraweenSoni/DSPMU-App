@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import { fetchUserData } from '../../services/apiService';
 import arrowForward from '../../../assets/arrowForward.png';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Feedback = () => { 
   const [name, setName] = useState('');
@@ -11,8 +12,9 @@ const Feedback = () => {
 
   useEffect(() => {
     const loadStudentDetails = async () => {
+      const token = await AsyncStorage.getItem("token");
       try {
-        const data = await fetchUserData("stuDetails/stuDetails");
+        const data = await fetchUserData("stuDetails/stuDetails", token);
         if (data) {
           setName(data.user.name);
           setEmail(data.user.email);

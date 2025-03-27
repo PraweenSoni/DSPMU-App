@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Calendar from '../components/Calendar';
 import Timetable from '../components/TimeTable';
 import NoticePre from '../components/NoticePre';
@@ -24,12 +25,13 @@ const FormBox = ({ num, formName, color }) => {
 };
 
 function Main() {
-  // Login user name fetch
   const navigation = useNavigation();
   const [studentName, setStudentName] = useState('');
-  useEffect(() => {
+
+  useEffect(async () => {
+    const token = await AsyncStorage.getItem("token");
     const loadUserProfile = async () => {
-      const data = await fetchUserData("stuDetails/stuDetails");
+      const data = await fetchUserData("stuDetails/stuDetails", token);
       if (data && data.user) {
         setStudentName(data.user.name);
       } else {
@@ -48,7 +50,7 @@ function Main() {
   useEffect(() => {
     const fetchNotices = async () => {
       try {
-        const response = await fetch('http://192.168.89.28:3000/api/cNotifi/');
+        const response = await fetch('http://192.168.24.28:3000/api/notifi/');
         const data = await response.json();
 
         // Extract and map API data to fit the expected format
@@ -60,7 +62,7 @@ function Main() {
 
         setNotices(formattedNotices);
       } catch (error) {
-        console.error('Error fetching notices:', error);
+        console.error('Error fetching notices :', error);
       }
     };
 
@@ -80,7 +82,8 @@ function Main() {
 
   useEffect(() => {
     const loadStudentPreDetail = async () => {
-      const data = await fetchUserData("stuPresent/stuPresent");
+      const token = await AsyncStorage.getItem("token");
+      const data = await fetchUserData("stuPresent/stuPresent", token);
       if (data) {
         setTclsrun(data.user.tclsrun);
         setClspre(data.user.clspre);
