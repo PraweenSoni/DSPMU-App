@@ -40,7 +40,7 @@ const Home = (props) => {
     return (
         <HomeStack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Main'>
             <HomeStack.Screen name="Main" component={Main} />
-            <HomeStack.Screen name="Profile" component={ProfileNavigator} />
+            <HomeStack.Screen name="ProfileN" component={ProfileNavigator} />
             <HomeStack.Screen name="Notice" component={Notice} />
             <HomeStack.Screen name="Other" component={Other} />
         </HomeStack.Navigator>

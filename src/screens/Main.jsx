@@ -94,7 +94,7 @@ const Main = () => {
           <Text>DSPMU, Ranchi</Text>
           <Text style={styles.greeting}>Hi, {studentName}</Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("Profile")}> 
+        <TouchableOpacity onPress={() => navigation.navigate("ProfileN")}> 
           <Image style={styles.userImg} source={userImg} />
         </TouchableOpacity>
       </View>
