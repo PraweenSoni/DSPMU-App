@@ -133,8 +133,8 @@ const Main = () => {
       <View style={styles.contactSec}>
         <Text style={styles.contactTitle}>Dr. Shyama Prasad Mukherjee University, Ranchi</Text>
         <Text>Add: P.O. - Ranchi University, Morabadi, Ranchi-834008</Text>
-        <Text>Call: +91 860 304 ****</Text>
-        <Text>Email: regi****@dspmuranchi.ac.in</Text>
+        <Text>Call: +91 96879500**</Text>
+        <Text>Email: ask.psoni@gmail.com</Text>
         <View style={styles.socialIcons}>
           {[facebook, instagram, youtube, linkedin, twitter].map((icon, index) => (
             <Image key={index} style={styles.socialMediaImg} source={icon} />

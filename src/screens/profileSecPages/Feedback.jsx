@@ -30,8 +30,8 @@ const Feedback = () => {
     loadStudentDetails();
   }, []);
 
-  const submitFeedback = async () => { // Handle the POST request here
-    const url = ''; // Replace with your actual backend URL
+  const submitFeedback = async () => { 
+    const url = 'http://192.168.24.28:3000/api/Feedback/Feedback'; 
     const feedbackData = {
       name: name,
       email: email,
@@ -40,7 +40,7 @@ const Feedback = () => {
     };
 
     try {
-      const userToken = "";
+      const userToken = await AsyncStorage.getItem("token");
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -54,6 +54,8 @@ const Feedback = () => {
         const result = await response.json();
         Alert.alert('Success', 'Feedback submitted successfully!');
         console.log('Response:', result);
+        setFeedback('');
+        setRating(0);
       } else {
         const error = await response.json();
         Alert.alert('Error', 'Failed to submit feedback!');
@@ -67,12 +69,12 @@ const Feedback = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
+      {/* <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Image style={styles.arrowForward} source={arrowForward} />
         <Text style={styles.backButton}>BACK</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
-      <Text style={styles.title}>Feedback Form</Text>
+      {/* <Text style={styles.title}>Feedback Form</Text> */}
 
       <TextInput
         style={[styles.input, { backgroundColor: '#f2f2f2' }]}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, StatusBar } from 'react-native';
 
 import Main from './Main';
 import Notice from './Notice';
@@ -38,10 +38,10 @@ const Home = (props) => {
     if (!isAuthenticated) return null; // Prevents rendering if not authenticated
 
     return (
-        <HomeStack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Main'>
-            <HomeStack.Screen name="Main" component={Main} />
+        <HomeStack.Navigator screenOptions={{ headerShown: false , statusBarBackgroundColor: "#1ab69d"}} initialRouteName='Main'>
+            <HomeStack.Screen name="Main"  component={Main} />
             <HomeStack.Screen name="ProfileN" component={ProfileNavigator} />
-            <HomeStack.Screen name="Notice" component={Notice} />
+            <HomeStack.Screen name="Notice" options={{headerShown: true}}  component={Notice} />
             <HomeStack.Screen name="Other" component={Other} />
         </HomeStack.Navigator>
     );

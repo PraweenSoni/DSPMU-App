@@ -48,7 +48,7 @@ const Profile = (props) => {
   };
 
   return (
-    <View style={{ height: '100%', alignItems: 'center', top: 80 }}>
+    <View style={{ height: '100%', alignItems: 'center', top: 40 }}>
       <Text style={{ fontSize: 30, fontWeight: '600', marginBottom: 20 }}>DSPMU, Ranchi</Text>
       <Image style={styles.userImg} source={userImg} />
       <View style={{ width: '100%', alignItems: 'center', marginTop: 10 }}>

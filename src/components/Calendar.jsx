@@ -70,7 +70,7 @@ const Calendar = () => {
         {daysInMonth.map((day) => renderDay(day))}
       </View>
       <View style={{borderWidth: 1, padding: 5, marginTop: 10, borderRadius: 4, borderColor: '#DDD'}}>
-        <Text style={{fontSize: 16}}>No Notice from college</Text>
+        <Text style={{fontSize: 16}}>No Notice from college for this date</Text>
       </View>
     </View>
   );
