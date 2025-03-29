@@ -1,30 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, Modal } from 'react-native';
 import Notices from "../components/Notices";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import NoticePre from '../components/NoticePre';
 
 function Notice() {
+  const [notices, setNotices] = useState([]);
   const [selectedNotice, setSelectedNotice] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const notices = [
-    { title: 'Notice 1', message: 'This is the first notice', date: '10/12' },
-    { title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, blanditiis! rergegegv', message: 'This is the first notice', date: '10/12' },
-    { title: 'Notice 2', message: 'This is the second notice', date: '11/12' },
-    { title: 'Notice 2', message: 'This is the second notice', date: '11/12' },
-    { title: 'Notice 2', message: 'This is the second notice', date: '11/12' },
-    { title: 'Notice 2', message: 'This is the second notice', date: '11/12' },
-    { title: 'Notice 2', message: 'This is the second notice', date: '11/12' },
-    { title: 'Notice 2', message: 'This is the second notice', date: '11/12' },
-    { title: 'Notice 2', message: 'This is the second notice', date: '11/12' },
-    { title: 'Notice 2', message: 'This is the second notice', date: '11/12' },
-    { title: 'Notice 2', message: 'This is the second notice', date: '11/12' },
-    { title: 'Notice 2', message: 'This is the second notice', date: '11/12' },
-    { title: 'Notice 2', message: 'This is the second notice', date: '11/12' },
-    { title: 'Notice 2', message: 'This is the second notice', date: '11/12' },
-    { title: 'Notice 2', message: 'This is the second notice', date: '11/12' },
-    { title: 'Notice 2', message: 'This is the second notice', date: '11/12' },
-  ];
 
+  useEffect(() => {
+    const fetchNotices = async () => {
+      const token = AsyncStorage.getItem("token");
+      try {
+        const response = await fetch('http://192.168.24.28:3000/api/notice/', token);
+        const data = await response.json();
+
+        if (!data.Notice) {
+          console.error("No notices found!");
+          return;
+        }
+
+        const Notice = data.Notice.map((notice) => ({
+          title: notice.noticeTitle,
+          message: notice.noticeMsg,
+          department: notice.department,
+          date: new Date(notice.date).toLocaleDateString(),
+        }));
+        setNotices(Notice);
+      } catch (error) {
+        console.error("Error fetching notices:", error);
+      }
+    };
+
+    fetchNotices();
+  }, []);
 
   const handleNoticePress = (notice) => {
     setSelectedNotice(notice);
@@ -32,7 +42,7 @@ function Notice() {
   };
 
   return (
-    <View style={{padding: '3%'}}>
+    <View style={{ padding: '3%' }}>
       <ScrollView>
         {notices.map((notice, index) => (
           <Notices
@@ -57,6 +67,7 @@ function Notice() {
               title={selectedNotice.title}
               message={selectedNotice.message}
               date={selectedNotice.date}
+              department={selectedNotice.department}
               onClose={() => setModalVisible(false)}
             />
           </View>

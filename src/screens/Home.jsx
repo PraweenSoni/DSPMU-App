@@ -41,7 +41,7 @@ const Home = (props) => {
         <HomeStack.Navigator screenOptions={{ headerShown: false , statusBarBackgroundColor: "#1ab69d"}} initialRouteName='Main'>
             <HomeStack.Screen name="Main"  component={Main} />
             <HomeStack.Screen name="ProfileN" component={ProfileNavigator} />
-            <HomeStack.Screen name="Notice" options={{headerShown: true}}  component={Notice} />
+            <HomeStack.Screen name="Notice" options={{headerShown: true, headerStyle:{backgroundColor: "#1ab69d"}, headerTintColor: "#fff"}}  component={Notice} />
             <HomeStack.Screen name="Other" component={Other} />
         </HomeStack.Navigator>
     );

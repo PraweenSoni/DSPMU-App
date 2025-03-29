@@ -2,20 +2,22 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 
-const NoticePre = ({ title, message, date, onClose }) => {
+const NoticePre = ({ title, message, date, department, onClose }) => {
   return (
     <View style={styles.container}>
-        <View style={{backgroundColor: '#1cb69d', flexDirection: 'row'}}>
-            <Text style={styles.title}>{title}</Text>
+      <View style={{ backgroundColor: '#1cb69d', flexDirection: 'row' }}>
+        <Text style={styles.title}>{title}</Text>
+      </View>
+      <View style={{ padding: '5%', flexDirection: 'column' }}>
+        <Text style={styles.message}>{message}</Text>
+        <View style={{ flexDirection: 'row' , justifyContent: 'space-between'}}>
+          <Text >{date}</Text><Text>{department}</Text>
         </View>
-        <View style={{padding: '5%'}}>
-            <Text style={styles.message}>{message}</Text>
-            <Text >{date}</Text>
-            <TouchableOpacity style={styles.button} onPress={onClose}>
-              <Text style={styles.buttonText}>Close</Text>
-            </TouchableOpacity>
-            {/* <Button style={{backgroundColor: '#ee4a63'}} title="Close" onPress={onClose} /> */}
-        </View>
+        <TouchableOpacity style={styles.button} onPress={onClose}>
+          <Text style={styles.buttonText}>Close</Text>
+        </TouchableOpacity>
+        {/* <Button style={{backgroundColor: '#ee4a63'}} title="Close" onPress={onClose} /> */}
+      </View>
     </View>
   );
 };

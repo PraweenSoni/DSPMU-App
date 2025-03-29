@@ -6,29 +6,24 @@ import arrowForward from '../../assets/arrowForward.png';
 import userImg from '../../assets/user.png';
 
 const Profile = (props) => {
-  const [studentName, setStudentName] = useState('');
-  const [studentSubject, setStudentSubject] = useState('');
-  const [studentDepart, setStudentDepart] = useState('');
+  const [studentName, setStudentName] = useState('N/A');
+  const [studentSubject, setStudentSubject] = useState('N/A');
+  const [studentDepart, setStudentDepart] = useState('N/A');
 
   useEffect(() => {
     const loadUserProfile = async () => {
       try {
-        const token = await AsyncStorage.getItem("token");
-        if (!token) {
+        const userDetails = await AsyncStorage.getItem("userDetails");
+        if (!userDetails) {
           props.navigation.replace("Start");
           return;
         }
         
-        const data = await fetchUserData("stuDetails/stuDetails", token);
-        if (data && data.user) {
-          setStudentName(data.user.name || "N/A");
-          setStudentSubject(data.user.subject || "N/A");
-          setStudentDepart(data.user.department || "N/A");
-        } else {
-          setStudentName("N/A");
-          setStudentSubject("N/A");
-          setStudentDepart("N/A");
-        }
+        const userData = JSON.parse(userDetails);
+        setStudentName(userData.user.name);
+        setStudentSubject(userData.user.subject);
+        setStudentDepart(userData.user.department);
+
       } catch (error) {
         console.error("Error loading user profile:", error);
       }
@@ -41,6 +36,8 @@ const Profile = (props) => {
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem("token");
+      await AsyncStorage.removeItem("user");
+      await AsyncStorage.removeItem("userDetails");
       props.navigation.replace("Start"); 
     } catch (error) {
       Alert.alert("Logout Failed", "Something went wrong. Please try again.");

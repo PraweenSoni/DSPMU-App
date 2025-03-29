@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
-import { fetchUserData } from '../../services/apiService';
-import arrowForward from '../../../assets/arrowForward.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Feedback = () => { 
@@ -12,18 +10,19 @@ const Feedback = () => {
 
   useEffect(() => {
     const loadStudentDetails = async () => {
-      const token = await AsyncStorage.getItem("token");
       try {
-        const data = await fetchUserData("stuDetails/stuDetails", token);
-        if (data) {
-          setName(data.user.name);
-          setEmail(data.user.email);
-        }else{
-          setName("N/A");
-          setEmail("N/A");
+        const userDetails = await AsyncStorage.getItem("userDetails");
+        if (!userDetails) {
+          props.navigation.replace("Start");
+          return;
         }
+        
+        const userData = JSON.parse(userDetails);
+        setName(userData.user.name);
+        setEmail(userData.user.email);
+
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error("Error loading user profile:", error);
       }
     };
 

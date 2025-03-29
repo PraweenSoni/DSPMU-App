@@ -35,9 +35,13 @@ const Main = () => {
     (async () => {
       const token = await AsyncStorage.getItem("token");
       if (!token) return;
+
+      const stuNameA = await AsyncStorage.getItem("user");
+      const stuName = JSON.parse(stuNameA);
+      setStudentName(stuName.name || "Error!");
       
       const userData = await fetchUserData("stuDetails/stuDetails", token);
-      setStudentName(userData?.user?.name || "Name Not Found!");
+      await AsyncStorage.setItem('userDetails', JSON.stringify(userData));
     })();
   }, []);
 
